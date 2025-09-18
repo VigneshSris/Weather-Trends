@@ -7,16 +7,30 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'weather/css/style.css' %}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .site-header { background: #007acc; color: #fff; padding: 10px 0; }
+    .site-header h1 a { color: #fff; text-decoration: none; }
+    .site-header nav a { color: #fff; margin-left: 15px; text-decoration: none; font-weight: bold; }
+    .site-footer { background: #333; color: #fff; text-align: center; padding: 10px 0; margin-top: 40px; }
+    .messages { list-style: none; padding: 0; margin-bottom: 20px; }
+    .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+    .message.success { background-color: #d4edda; color: #155724; }
+    .message.error { background-color: #f8d7da; color: #721c24; }
+    main a { color: #007acc; text-decoration: none; }
+    main a:hover { text-decoration: underline; }
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <h1><a href="/">Weather Trends</a></h1>
+      <h1><a href="{% url 'dashboard' %}">Weather Trends</a></h1>
       <nav>
         {% if user.is_authenticated %}
           <a href="{% url 'dashboard' %}">Dashboard</a>
           <a href="{% url 'upload_csv' %}">Upload CSV</a>
-          <a href="{% url 'logout' %}">Logout</a>
+         
         {% else %}
           <a href="{% url 'login' %}">Login</a>
           <a href="{% url 'register' %}">Register</a>

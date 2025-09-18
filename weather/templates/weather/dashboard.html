@@ -2,6 +2,12 @@
 {% block content %}
 <h2>Dashboard</h2>
 
+{% if messages %}
+  {% for message in messages %}
+    <p class="message {{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
 <form method="get" class="filters">
   <label>City:
     <select name="city">
@@ -35,7 +41,6 @@
     <p><strong>Coldest day:</strong> {{ coldest.date }} — {{ coldest.temperature_c }} °C</p>
   </div>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const times         = {{ times|safe }};
@@ -49,13 +54,7 @@
       type: 'line',
       data: {
         labels: times,
-        datasets: [{
-          label: 'Temperature (°C)',
-          data: temps,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          fill: false,
-          tension: 0.2
-        }]
+        datasets: [{ label: 'Temperature (°C)', data: temps, borderColor: 'rgba(75, 192, 192, 1)', fill: false, tension: 0.2 }]
       },
       options: { responsive: true }
     });
@@ -64,13 +63,7 @@
       type: 'line',
       data: {
         labels: monthlyLabels,
-        datasets: [{
-          label: 'Avg monthly temp (°C)',
-          data: monthlyTemps,
-          borderColor: 'rgba(255, 99, 132, 1)',
-          fill: false,
-          tension: 0.15
-        }]
+        datasets: [{ label: 'Avg monthly temp (°C)', data: monthlyTemps, borderColor: 'rgba(255, 99, 132, 1)', fill: false, tension: 0.15 }]
       },
       options: { responsive: true }
     });
@@ -79,19 +72,12 @@
       type: 'bar',
       data: {
         labels: rainLabels,
-        datasets: [{
-          label: 'Monthly rainfall (mm)',
-          data: rainValues,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)'
-        }]
+        datasets: [{ label: 'Monthly rainfall (mm)', data: rainValues, backgroundColor: 'rgba(54, 162, 235, 0.6)' }]
       },
       options: { responsive: true }
     });
   </script>
 {% else %}
-  <p>
-    No data for selected filters. Upload a CSV at
-    <a href="{% url 'upload_csv' %}">Upload CSV</a>.
-  </p>
+  <p>No data for selected filters. Upload a CSV at <a href="{% url 'upload_csv' %}">Upload CSV</a>.</p>
 {% endif %}
 {% endblock %}
