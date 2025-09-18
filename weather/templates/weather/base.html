@@ -22,8 +22,10 @@
           <a href="{% url 'register' %}">Register</a>
         {% endif %}
       </nav>
+      <div style="clear:both;"></div>
     </div>
   </header>
+
   <main class="container">
     {% if messages %}
       <ul class="messages">
@@ -34,6 +36,7 @@
     {% endif %}
     {% block content %}{% endblock %}
   </main>
+
   <footer class="site-footer">
     <div class="container">© 2025 Weather Analytics</div>
   </footer>
