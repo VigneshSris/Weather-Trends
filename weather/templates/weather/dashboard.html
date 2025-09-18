@@ -1,0 +1,97 @@
+{% extends 'weather/base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+
+<form method="get" class="filters">
+  <label>City:
+    <select name="city">
+      <option value="">-- all --</option>
+      {% for c in cities %}
+        <option value="{{ c }}" {% if c == request.GET.city %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Start:
+    <input type="date" name="start" value="{{ request.GET.start }}">
+  </label>
+  <label>End:
+    <input type="date" name="end" value="{{ request.GET.end }}">
+  </label>
+  <button type="submit">Filter</button>
+</form>
+
+{% if times %}
+  <h3>Temperature over time</h3>
+  <canvas id="tempChart" width="800" height="250"></canvas>
+
+  <h3>Average monthly temperature</h3>
+  <canvas id="monthlyChart" width="800" height="250"></canvas>
+
+  <h3>Monthly rainfall</h3>
+  <canvas id="rainChart" width="800" height="250"></canvas>
+
+  <div class="stats">
+    <p><strong>Hottest day:</strong> {{ hottest.date }} — {{ hottest.temperature_c }} °C</p>
+    <p><strong>Coldest day:</strong> {{ coldest.date }} — {{ coldest.temperature_c }} °C</p>
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const times         = {{ times|safe }};
+    const temps         = {{ temps|safe }};
+    const monthlyLabels = {{ monthly_labels|safe }};
+    const monthlyTemps  = {{ monthly_temps|safe }};
+    const rainLabels    = {{ rain_labels|safe }};
+    const rainValues    = {{ rain_values|safe }};
+    
+    new Chart(document.getElementById('tempChart'), {
+      type: 'line',
+      data: {
+        labels: times,
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: temps,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          fill: false,
+          tension: 0.2
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('monthlyChart'), {
+      type: 'line',
+      data: {
+        labels: monthlyLabels,
+        datasets: [{
+          label: 'Avg monthly temp (°C)',
+          data: monthlyTemps,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          fill: false,
+          tension: 0.15
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('rainChart'), {
+      type: 'bar',
+      data: {
+        labels: rainLabels,
+        datasets: [{
+          label: 'Monthly rainfall (mm)',
+          data: rainValues,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+      },
+      options: { responsive: true }
+    });
+  </script>
+{% else %}
+  <p>
+    No data for selected filters. Upload a CSV at
+    <a href="{% url 'upload_csv' %}">Upload CSV</a>.
+  </p>
+{% endif %}
+{% endblock %}

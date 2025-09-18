@@ -1,0 +1,7 @@
+date,city,temperature_c,humidity,rainfall_mm
+2024-01-01,London,5.2,81,0
+2024-01-02,London,4.8,83,1.5
+2024-02-10,London,7.1,78,0
+2024-07-15,Mumbai,31.2,72,0.0
+2024-07-16,Mumbai,30.5,74,5.0
+2024-08-01,Mumbai,29.9,80,10.0

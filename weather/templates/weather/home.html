@@ -1,0 +1,5 @@
+{% extends 'weather/base.html' %}
+{% block content %}
+<h2>Welcome</h2>
+<p>This site lets you upload historical weather CSVs and view analytics. Please <a href="{% url 'register' %}">register</a> or <a href="{% url 'login' %}">login</a>.</p>
+{% endblock %}
